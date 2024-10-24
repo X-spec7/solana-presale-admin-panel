@@ -1,10 +1,8 @@
 # Project Title
 
-#### SaaS Template
-
+#### Admin Site
 ## Description
-This is a template for a SaaS application. It is built with Next.js, Tailwind CSS.
-This is based on Dropshipping Automate Platform in my Github.
+This is a admin template for management of Solana presale project. It is built with Next.js, Tailwind CSS, and Solana web3.
 
 ### Installing and Executing
 
