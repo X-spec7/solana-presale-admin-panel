@@ -1,14 +1,17 @@
 "use client";
 
 import React, { useState } from 'react';
+import { createPresale, startPresale } from '@/anchor';
+import { createNewDevnetTokenMint } from '@/anchor/setup';
+import { BN } from '@coral-xyz/anchor';
 
 export default function CreatePresale() {
   const [createPresaleData, setCreatePresaleData] = useState({
-    mintAddress: '',
-    softcap: '',
-    hardcap: '',
+    // mintAddress: '',
+    softcapInSol: '',
+    hardcapInSol: '',
     maxTokenPerAddress: '',
-    pricePerToken: '',
+    pricePerTokenInLamports: '',
   });
 
   const [startPresaleData, setStartPresaleData] = useState({
@@ -24,16 +27,34 @@ export default function CreatePresale() {
     setStartPresaleData({ ...startPresaleData, [e.target.id]: e.target.value });
   };
 
-  const handleCreatePresale = (e: React.FormEvent) => {
+  const handleCreatePresale = async (e: React.FormEvent) => {
     e.preventDefault();
+    const tx = await createPresale({
+      softCapAmount: new BN(createPresaleData.softcapInSol),
+      hardCapAmount: new BN(createPresaleData.hardcapInSol),
+      maxTokenAmountPerUser: new BN(createPresaleData.maxTokenPerAddress),
+      pricePerToken: new BN(createPresaleData.pricePerTokenInLamports),
+    });
     // TODO: Implement presale creation logic here
-    console.log('Creating presale with:', createPresaleData);
+    console.log('create presale transaction: ', tx);
   };
 
-  const handleStartPresale = (e: React.FormEvent) => {
+  const handleStartPresale = async (e: React.FormEvent) => {
+
     e.preventDefault();
+    const tx = await startPresale({
+      startDate: new BN(Math.floor(new Date(startPresaleData.startTime).getTime() / 1000)),
+      endDate: new BN(Math.floor(new Date(startPresaleData.endTime).getTime() / 1000)),
+    });
     // TODO: Implement start presale logic here
-    console.log('Starting presale with:', startPresaleData);
+    console.log('start presale transaction: ', tx);
+  };
+
+  const handleCreateMint = async (e: React.FormEvent) => {
+    e.preventDefault();
+    await createNewDevnetTokenMint();
+    console.log("new token mint created on devnet");
+    // TODO: Implement mint creation logic here
   };
 
   return (
@@ -79,7 +100,7 @@ export default function CreatePresale() {
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 dark:text-white bg-gray-100 dark:bg-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   id={key}
                   type="datetime-local"
-                  value={value} 
+                  value={value}
                   onChange={handleStartPresaleChange}
                   required
                 />
@@ -92,6 +113,14 @@ export default function CreatePresale() {
               type="submit"
             >
               Start Presale
+            </button>
+          </div>
+          <div className="flex items-center justify-between mt-5">
+            <button
+              className="bg-red-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
+              onClick={handleCreateMint}
+            >
+              Create Mint
             </button>
           </div>
         </form>

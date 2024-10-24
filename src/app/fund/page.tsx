@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { useTheme } from 'next-themes';
+import { depositToken, withdrawSol, withdrawToken } from '@/anchor';
 
 export default function FundManagement() {
   const { theme } = useTheme();
@@ -9,22 +10,31 @@ export default function FundManagement() {
   const [withdrawSolAmount, setWithdrawSolAmount] = useState('');
   const [withdrawTokenAmount, setWithdrawTokenAmount] = useState('');
 
-  const handleDeposit = (e: React.FormEvent) => {
+  const handleDeposit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const tx = await depositToken({
+      amount: Number(depositAmount),
+    });
     // TODO: Implement deposit logic here
-    console.log('Depositing:', depositAmount);
+    console.log('Deposit transaction: ', tx);
   };
 
-  const handleWithdrawSol = (e: React.FormEvent) => {
+  const handleWithdrawSol = async (e: React.FormEvent) => {
     e.preventDefault();
+    const tx = await withdrawSol({
+      amount: Number(withdrawSolAmount),
+    });
     // TODO: Implement SOL withdrawal logic here
-    console.log('Withdrawing SOL:', withdrawSolAmount);
+    console.log('Withdraw SOL transaction: ', tx);
   };
 
-  const handleWithdrawToken = (e: React.FormEvent) => {
+  const handleWithdrawToken = async (e: React.FormEvent) => {
     e.preventDefault();
+    const tx = await withdrawToken({
+      amount: Number(withdrawTokenAmount),
+    });
     // TODO: Implement token withdrawal logic here
-    console.log('Withdrawing tokens:', withdrawTokenAmount);
+    console.log('Withdraw Token transaction: ', tx);
   };
 
   return (

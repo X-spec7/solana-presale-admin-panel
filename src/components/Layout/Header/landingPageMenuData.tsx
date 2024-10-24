@@ -25,6 +25,12 @@ const landingPageMenuData: Menu[] = [
     path: "/buy",
     newTab: false,
   },
+  {
+    id: 5,
+    title: "Presale Info",
+    path: "/presale-info",
+    newTab: false,
+  }
 ];
 
 export default landingPageMenuData;

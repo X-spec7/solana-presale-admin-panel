@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import { buyToken } from '@/anchor';
 import { useTheme } from 'next-themes';
 
 export default function BuyToken() {
@@ -35,10 +36,14 @@ export default function BuyToken() {
     setTokenAmount(e.target.value);
   };
 
-  const handleBuy = (e: React.FormEvent) => {
+  const handleBuy = async (e: React.FormEvent) => {
     e.preventDefault();
+    const tx = await buyToken({
+      quoteInLamports: Number(solAmount),
+    });
+
     // TODO: Implement token purchase logic here
-    console.log('Buying tokens:', { solAmount, tokenAmount });
+    console.log('buy transaction: ', tx);
   };
 
   return (
